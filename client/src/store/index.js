@@ -7,5 +7,12 @@ export const store = configureStore({
     auth: authReducer,
     events: eventReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 })
+
+// Export the base API URL for use throughout the app
+export const API_URL = import.meta.env.VITE_API_URL || "https://event-management-857p.onrender.com"
 

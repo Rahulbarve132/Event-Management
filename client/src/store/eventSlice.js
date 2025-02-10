@@ -1,8 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { fetchEvents, fetchEventById, createEvent as apiCreateEvent, attendEvent as apiAttendEvent, unattendEvent as apiUnattendEvent, apiUpdateEvent } from "../api/events"
+import axios from "axios"
+import { API_URL } from "."
 
-export const getEvents = createAsyncThunk("events/getEvents", async (filter) => {
-  const response = await fetchEvents(filter)
+export const getEvents = createAsyncThunk("events/getEvents", async () => {
+  const response = await fetchEvents()
   return response
 })
 
@@ -12,14 +14,34 @@ export const getEventById = createAsyncThunk("events/getEventById", async (id) =
 })
 
 export const createEvent = createAsyncThunk(
-  "events/createEvent",
+  "events/create",
   async (eventData, { rejectWithValue }) => {
     try {
-      const response = await apiCreateEvent(eventData);
-      return response;
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      const formData = new FormData();
+      Object.keys(eventData).forEach(key => {
+        if (eventData[key] !== null && eventData[key] !== undefined) {
+          if (key === 'date' && eventData.time) {
+            const dateTime = new Date(`${eventData.date}T${eventData.time}`);
+            formData.append('date', dateTime.toISOString());
+          } else if (key !== 'time') {
+            formData.append(key, eventData[key]);
+          }
+        }
+      });
+
+      const response = await axios.post(`${API_URL}/api/events`, formData, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      return response.data;
     } catch (error) {
       if (error.response?.status === 401) {
-        // Handle unauthorized error
         window.location.href = '/login';
       }
       return rejectWithValue(error.response?.data?.error || 'Failed to create event');

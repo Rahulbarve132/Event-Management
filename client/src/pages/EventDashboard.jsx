@@ -24,7 +24,19 @@ function EventDashboard() {
   const user = useSelector((state) => state.auth.user)
 
   useEffect(() => {
-    dispatch(getEvents(filter))
+    const fetchFilteredEvents = async () => {
+      try {
+        const params = {};
+        if (filter.category) params.category = filter.category;
+        if (filter.date) params.date = filter.date;
+        
+        dispatch(getEvents(params));
+      } catch (error) {
+        console.error('Failed to fetch events:', error);
+      }
+    };
+
+    fetchFilteredEvents();
 
     // Connect to socket
     const socket = socketService.connect()
@@ -43,7 +55,7 @@ function EventDashboard() {
     return () => {
       socket.off('eventUpdated')
     }
-  }, [dispatch, filter])
+  }, [dispatch, filter.category, filter.date])
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">

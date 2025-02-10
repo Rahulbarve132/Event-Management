@@ -1,23 +1,43 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { login as apiLogin, register as apiRegister, logout as apiLogout } from "../api/auth"
-import socketService  from "../services/socketService"
+import axios from "axios"
+import { API_URL } from "../config"
+import socketService from "../services/socketService"
 
 export const login = createAsyncThunk(
   "auth/login",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await apiLogin(credentials.email, credentials.password)
-      return response
+      const response = await axios.post(`${API_URL}/api/auth/login`, credentials);
+      const { token, user } = response.data;
+      
+      // Store token and user data
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.error || 'Login failed')
+      return rejectWithValue(error.response?.data?.error || 'Login failed');
     }
   }
-)
+);
 
-export const register = createAsyncThunk("auth/register", async (userData) => {
-  const response = await apiRegister(userData.name, userData.email, userData.password)
-  return response
-})
+export const register = createAsyncThunk(
+  "auth/register",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${API_URL}/api/auth/register`, userData);
+      const { token, user } = response.data;
+      
+      // Store token and user data
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || 'Registration failed');
+    }
+  }
+);
 
 export const logout = createAsyncThunk("auth/logout", async () => {
   await apiLogout()
