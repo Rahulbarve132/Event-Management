@@ -1,6 +1,6 @@
 # EventX - Modern Event Management Platform
 
-![EventX Banner](path_to_banner_image.png)
+
 
 EventX is a cutting-edge event management platform that enables users to create, discover, and manage events seamlessly. Built with modern technologies and a focus on user experience, EventX provides a comprehensive solution for both event organizers and attendees.
 
