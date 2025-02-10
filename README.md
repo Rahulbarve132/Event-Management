@@ -125,24 +125,5 @@ We welcome contributions to EventX! Please follow these steps:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👥 Team
 
-- [Your Name](https://github.com/yourusername) - Full Stack Developer
-- [Team Member 2](https://github.com/teammember2) - Frontend Developer
-- [Team Member 3](https://github.com/teammember3) - Backend Developer
-
-## 📞 Contact
-
-For any queries or support, please contact:
-- Email: your.email@example.com
-- Twitter: [@yourusername](https://twitter.com/yourusername)
-- LinkedIn: [Your Name](https://linkedin.com/in/yourprofile)
-
-## 🙏 Acknowledgments
-
-- Thanks to [Name] for design inspiration
-- [Library/Tool] for providing excellent documentation
-- All our beta testers for valuable feedback
-
----
 
