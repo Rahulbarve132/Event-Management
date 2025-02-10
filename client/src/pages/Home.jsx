@@ -68,14 +68,14 @@ export default function Home() {
               </p>
               <Link 
                 to="/events"
-                className="bg-[#6c5dd3] px-6 py-3 rounded-full font-semibold flex items-center gap-2 w-fit"
+                className="bg-[#6c5dd3] px-3 py-3 rounded-full font-semibold flex items-center gap-2 w-fit"
               >
                 {user ? "GET TICKET" : "Browse Events"}
-                <ArrowRight className="w-10 h-5" />
+                <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
-            <div className="relative">
-              <div className="absolute -rotate-12 bg-[#c2fd4c] text-black p-16 rounded-lg">
+            <div className="">
+              <div className=" -rotate-12 bg-[#c2fd4c] text-black p-20  rounded-lg">
                 <span className="text-2xl font-bold">TICKET</span>
               </div>
             </div>
