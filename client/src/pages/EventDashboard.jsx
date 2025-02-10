@@ -17,8 +17,17 @@ const EVENT_CATEGORIES = [
   "Entertainment Events",
 ]
 
+const EVENT_TIMING_OPTIONS = [
+  { value: "all", label: "All Events" },
+  { value: "upcoming", label: "Upcoming Events" },
+  { value: "past", label: "Past Events" },
+]
+
 function EventDashboard() {
-  const [filter, setFilter] = useState({ category: "", date: "" })
+  const [filter, setFilter] = useState({ 
+    category: "", 
+    timing: "all" 
+  })
   const dispatch = useDispatch()
   const { list: events, status } = useSelector((state) => state.events)
   const user = useSelector((state) => state.auth.user)
@@ -28,7 +37,7 @@ function EventDashboard() {
       try {
         const params = {};
         if (filter.category) params.category = filter.category;
-        if (filter.date) params.date = filter.date;
+        if (filter.timing !== "all") params.timing = filter.timing;
         
         dispatch(getEvents(params));
       } catch (error) {
@@ -55,7 +64,38 @@ function EventDashboard() {
     return () => {
       socket.off('eventUpdated')
     }
-  }, [dispatch, filter.category, filter.date])
+  }, [dispatch, filter.category, filter.timing])
+
+  // Function to check if event is upcoming or past
+  const isUpcomingEvent = (eventDate) => {
+    return new Date(eventDate) > new Date();
+  };
+
+  // Function to format date
+  const formatEventDate = (date) => {
+    return new Date(date).toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  // Filter events based on timing
+  const getFilteredEvents = () => {
+    if (!events) return [];
+    
+    return events.filter(event => {
+      const isUpcoming = isUpcomingEvent(event.date);
+      if (filter.timing === 'upcoming') return isUpcoming;
+      if (filter.timing === 'past') return !isUpcoming;
+      return true; // 'all' timing
+    });
+  };
+
+  const filteredEvents = getFilteredEvents();
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
@@ -99,14 +139,19 @@ function EventDashboard() {
             </div>
             <div className="flex-1">
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Date
+                Event Timing
               </label>
-              <input
-                type="date"
-                value={filter.date}
-                onChange={(e) => setFilter({ ...filter, date: e.target.value })}
+              <select
+                value={filter.timing}
+                onChange={(e) => setFilter({ ...filter, timing: e.target.value })}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-              />
+              >
+                {EVENT_TIMING_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
@@ -118,7 +163,7 @@ function EventDashboard() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {events.map((event) => (
+            {filteredEvents.map((event) => (
               <Link
                 key={event._id}
                 to={`/events/${event._id}`}
@@ -142,8 +187,8 @@ function EventDashboard() {
                     <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
                       {event.category}
                     </span>
-                    <span className="text-sm text-gray-500">
-                      {new Date(event.date).toLocaleDateString()}
+                    <span className={`text-sm ${isUpcomingEvent(event.date) ? 'text-green-600' : 'text-red-600'} font-medium`}>
+                      {isUpcomingEvent(event.date) ? 'Upcoming' : 'Past'}
                     </span>
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -155,14 +200,19 @@ function EventDashboard() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <span className="text-gray-600 text-sm">
+                        {formatEventDate(event.date)}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
                       <span className="text-gray-600 text-sm">
                         {event.attendees?.length || 0} Attendees
                       </span>
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <span>By {event.creator?.name}</span>
                     </div>
                   </div>
                 </div>
@@ -171,7 +221,7 @@ function EventDashboard() {
           </div>
         )}
 
-        {events.length === 0 && status !== "loading" && (
+        {filteredEvents.length === 0 && status !== "loading" && (
           <div className="text-center py-12">
             <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1M19 20a2 2 0 002-2V8m-2 12a2 2 0 01-2-2v-1" />

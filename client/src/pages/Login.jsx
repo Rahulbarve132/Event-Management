@@ -26,10 +26,10 @@ function Login() {
   return (
     <div className="min-h-screen bg-[#1a1b26] flex items-center justify-center">
       <div className="w-full max-w-md p-8">
-        <h2 className="text-3xl font-bold mb-8 text-center text-[#c2fd4c]">Login to EventX</h2>
+        <h2 className="text-3xl font-bold mb-20 text-center text-[#c2fd4c]">Login to EventX</h2>
         {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
         
-        <form className="stackedForm" onSubmit={handleSubmit}>
+        <form className="stackedForm flex" onSubmit={handleSubmit}>
           <ul className="wrapper">
             <li style={{ "--i": "3" }}>
               <input

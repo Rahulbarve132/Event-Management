@@ -7,7 +7,7 @@ class SocketService {
 
   connect() {
     if (!this.socket) {
-      this.socket = io('http://localhost:8000', {
+      this.socket = io('https://event-management-857p.onrender.com', {
         transports: ['websocket'],
       });
 
