@@ -1,7 +1,10 @@
 import { ArrowRight, Play, QrCode } from "lucide-react"
 import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 export default function Home() {
+  const { user } = useSelector((state) => state.auth)
+
   return (
     <div className="min-h-screen bg-[#1a1b26] text-white px-20">
       {/* Hero Section */}
@@ -46,7 +49,7 @@ export default function Home() {
               to="/events"
               className="bg-[#c2fd4c] text-black px-8 py-3 rounded-full font-semibold flex items-center gap-2 w-fit"
             >
-              Book Your Seat for EVENTX
+              {user ? "Book Your Seat for EVENTX" : "Browse as Guest"}
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
@@ -65,9 +68,9 @@ export default function Home() {
               </p>
               <Link 
                 to="/events"
-                className="bg-[#6c5dd3] px-6 py-3 rounded-full font-semibold flex items-center gap-2"
+                className="bg-[#6c5dd3] px-6 py-3 rounded-full font-semibold flex items-center gap-2 w-fit"
               >
-                GET TICKET
+                {user ? "GET TICKET" : "Browse Events"}
                 <ArrowRight className="w-10 h-5" />
               </Link>
             </div>
@@ -92,7 +95,7 @@ export default function Home() {
                   to="/events"
                   className="bg-[#c2fd4c] text-black px-6 py-3 rounded-full font-semibold flex items-center gap-2"
                 >
-                  EXPLORE THE LOCATION
+                  {user ? "EXPLORE THE LOCATION" : "Browse Events"}
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -114,10 +117,10 @@ export default function Home() {
               FIRST TICKET
             </h3>
             <Link 
-              to="/events"
+              to={user ? "/events" : "/login"}
               className="bg-[#6c5dd3] px-8 py-3 rounded-full font-semibold inline-flex items-center gap-2"
             >
-              GET TICKET
+              {user ? "GET TICKET" : "Login to Book"}
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>

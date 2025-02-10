@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { login } from "../store/authSlice"
+import "./auth.css" // We'll create this CSS file
 
 function Login() {
   const [email, setEmail] = useState("")
@@ -23,44 +24,43 @@ function Login() {
   }
 
   return (
-    <div className="max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Login</h2>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="email" className="block mb-1">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password" className="block mb-1">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-          disabled={status === "loading"}
-        >
-          {status === "loading" ? "Logging in..." : "Login"}
-        </button>
-      </form>
+    <div className="min-h-screen bg-[#1a1b26] flex items-center justify-center">
+      <div className="w-full max-w-md p-8">
+        <h2 className="text-3xl font-bold mb-8 text-center text-[#c2fd4c]">Login to EventX</h2>
+        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+        
+        <form className="stackedForm" onSubmit={handleSubmit}>
+          <ul className="wrapper">
+            <li style={{ "--i": "3" }}>
+              <input
+                type="email"
+                required
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="input"
+              />
+            </li>
+            <li style={{ "--i": "2" }}>
+              <input
+                type="password"
+                required
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input"
+              />
+            </li>
+            <button 
+              type="submit" 
+              style={{ "--i": "1" }}
+              disabled={status === "loading"}
+            >
+              <span>{status === "loading" ? "Logging in..." : "Login"}</span>
+            </button>
+          </ul>
+        </form>
+      </div>
     </div>
   )
 }

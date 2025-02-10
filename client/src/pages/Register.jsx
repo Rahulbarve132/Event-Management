@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { register } from "../store/authSlice"
+import "./auth.css"
 
 function Register() {
   const [name, setName] = useState("")
@@ -24,57 +25,53 @@ function Register() {
   }
 
   return (
-    <div className="max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Register</h2>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="name" className="block mb-1">
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="email" className="block mb-1">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password" className="block mb-1">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-          disabled={status === "loading"}
-        >
-          {status === "loading" ? "Registering..." : "Register"}
-        </button>
-      </form>
+    <div className="min-h-screen bg-[#1a1b26] flex items-center justify-center">
+      <div className="w-full max-w-md p-8">
+        <h2 className="text-3xl font-bold mb-20 text-center text-[#c2fd4c]">Create Account</h2>
+        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+        
+        <form className="stackedForm flex " onSubmit={handleSubmit}>
+          <ul className="wrapper">
+            <li style={{ "--i": "4" }}>
+              <input
+                type="text"
+                required
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="input"
+              />
+            </li>
+            <li style={{ "--i": "3" }}>
+              <input
+                type="email"
+                required
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="input"
+              />
+            </li>
+            <li style={{ "--i": "2" }}>
+              <input
+                type="password"
+                required
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input"
+              />
+            </li>
+            <button 
+              type="submit" 
+              style={{ "--i": "1" }}
+              disabled={status === "loading"}
+            >
+              <span>{status === "loading" ? "Creating Account..." : "Register"}</span>
+            </button>
+          </ul>
+        </form>
+      </div>
     </div>
   )
 }
