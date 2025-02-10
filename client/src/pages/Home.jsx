@@ -6,66 +6,39 @@ export default function Home() {
   const { user } = useSelector((state) => state.auth)
 
   return (
-    <div className="min-h-screen bg-[#1a1b26] text-white px-20">
+    <div className="min-h-screen bg-[#1a1b26] text-white px-4 sm:px-8 md:px-12 lg:px-20">
       {/* Hero Section */}
-      <div className=" mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-12">
-          <h1 className="text-[#c2fd4c] text-xl font-bold">
+      <div className="mx-auto py-4 sm:py-6 md:py-8">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8 sm:mb-12">
+          <h1 className="text-[#c2fd4c] text-lg sm:text-xl font-bold">
             EVENT<span className="text-white">X</span>
           </h1>
-          <QrCode className="text-[#c2fd4c] w-8 h-8" />
+          <QrCode className="text-[#c2fd4c] w-6 h-6 sm:w-8 sm:h-8" />
         </div>
 
-        <div className="space-y-20">
+        <div className="space-y-12 sm:space-y-16 md:space-y-20">
           {/* Main Heading */}
           <div className="max-w-3xl w-full">
-            <div className="text-7xl w-full font-bold leading-tight mb-8">
+            <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl w-full font-bold leading-tight mb-6 sm:mb-8">
               BOOK{" "}
               <span className="inline-block bg-[#6c5dd3] p-2 rounded-lg mx-2">
-                <Play className="w-8 h-8" />
+                <Play className="w-6 h-6 sm:w-8 sm:h-8" />
               </span>{" "}
               AND EXPLORE
               <br />
               UPCOMING <span className="text-[#c2fd4c]">EVENTS</span>
             </div>
 
-            {/* Timer */}
-            <div className="flex gap-8 mb-8">
-              <div className="text-center">
-                <span className="text-4xl font-bold">23</span>
-                <p className="text-gray-400">HOURS</p>
-              </div>
-              <div className="text-center">
-                <span className="text-4xl font-bold">04</span>
-                <p className="text-gray-400">MINUTES</p>
-              </div>
-              <div className="text-center">
-                <span className="text-4xl font-bold">47</span>
-                <p className="text-gray-400">SECONDS</p>
-              </div>
-            </div>
-
-            <Link 
-              to="/events"
-              className="bg-[#c2fd4c] text-black px-8 py-3 rounded-full font-semibold flex items-center gap-2 w-fit"
-            >
-              {user ? "Book Your Seat for EVENTX" : "Browse as Guest"}
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-
-          {/* Decide to Join Section */}
-          <div className="flex gap-0 items-center">
-            <div>
-              <h3 className="text-4xl font-bold mb-4">
-                DECIDE TO JOIN
-                <br />
-                THE EVENT
-              </h3>
-              <p className="text-gray-400 mb-6 w-1/2">
-                Once you've found an event you're interested in, you can view all the details and information you need,
-                including the event date, time, location, lineup, speakers and agenda.
-              </p>
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+              <Link
+                to={user ? "/events/create" : "/login"}
+                className="bg-[#c2fd4c] text-black px-6 sm:px-8 py-3 rounded-full font-semibold flex items-center gap-2 w-fit"
+              >
+                {user ? "Book Your Seat for EVENTX" : "Browse as Guest"}
+                <ArrowRight className="w-5 h-5" />
+              </Link>
               <Link 
                 to="/events"
                 className="bg-[#6c5dd3] px-3 py-3 rounded-full font-semibold flex items-center gap-2 w-fit"
@@ -74,61 +47,45 @@ export default function Home() {
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
-            <div className="">
-              <div className=" -rotate-12 bg-[#c2fd4c] text-black p-20  rounded-lg">
-                <span className="text-2xl font-bold">TICKET</span>
-              </div>
-            </div>
           </div>
 
-          {/* Discover Events Section */}
-          <div>
-            <h3 className="text-4xl font-bold mb-12">DISCOVER UPCOMING EVENTS</h3>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-[#6c5dd3] p-8 rounded-xl">
-                <h4 className="text-xl font-bold mb-4">EXPLORE THE LOCATION</h4>
-                <p className="text-gray-200 mb-6">
-                  Our platform is designed to make it easy for you to find and book events that match your interests and
-                  preferences.
-                </p>
-                <Link 
-                  to="/events"
-                  className="bg-[#c2fd4c] text-black px-6 py-3 rounded-full font-semibold flex items-center gap-2"
-                >
-                  {user ? "EXPLORE THE LOCATION" : "Browse Events"}
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
+          {/* Features Section */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="bg-[#1f2937] p-6 rounded-xl">
+              <div className="bg-[#6c5dd3] w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
               </div>
-              <div>
-                <img
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/original-498ac15ff59efcd693c1833f5e69ccf6.jpg-aM8MnJAcfd2ecDIUDqkVDov2TA4JlG.png"
-                  alt="Event venue"
-                  className="rounded-xl w-full h-64 object-cover"
-                />
-              </div>
+              <h3 className="text-xl font-semibold mb-2">Real-time Updates</h3>
+              <p className="text-gray-400">Get instant notifications about event changes and updates.</p>
             </div>
-          </div>
 
-          {/* Get Ticket Section */}
-          <div className="text-center py-16">
-            <h3 className="text-4xl font-bold mb-8">
-              GET YOUR
-              <br />
-              FIRST TICKET
-            </h3>
-            <Link 
-              to={user ? "/events" : "/login"}
-              className="bg-[#6c5dd3] px-8 py-3 rounded-full font-semibold inline-flex items-center gap-2"
-            >
-              {user ? "GET TICKET" : "Login to Book"}
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            <div className="bg-[#1f2937] p-6 rounded-xl">
+              <div className="bg-[#6c5dd3] w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Secure Payments</h3>
+              <p className="text-gray-400">Safe and secure payment processing for all transactions.</p>
+            </div>
+
+            <div className="bg-[#1f2937] p-6 rounded-xl sm:col-span-2 lg:col-span-1">
+              <div className="bg-[#6c5dd3] w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Social Integration</h3>
+              <p className="text-gray-400">Connect with other attendees and share your experiences.</p>
+            </div>
           </div>
 
           {/* Newsletter Section */}
-          <div className="flex justify-between items-center border-t border-gray-800 pt-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-t border-gray-800 pt-8 gap-6 sm:gap-0">
             <div>
-              <h4 className="font-bold mb-2">
+              <h4 className="font-bold mb-2 text-lg sm:text-xl">
                 SUBSCRIBE TO
                 <br />
                 OUR NEWSLETTER
@@ -138,8 +95,8 @@ export default function Home() {
                 <ArrowRight className="w-5 h-5" />
               </button>
             </div>
-            <div className="text-right">
-              <h5 className="text-[#c2fd4c] text-xl font-bold mb-4">
+            <div className="text-left sm:text-right">
+              <h5 className="text-[#c2fd4c] text-lg sm:text-xl font-bold mb-4">
                 EVENT<span className="text-white">X</span>
               </h5>
               <div className="space-y-2 text-gray-400">
